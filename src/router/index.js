@@ -12,6 +12,12 @@ const routes = [
   {
     path: "/signin",
     component: SignPage,
+    props: { signState: "signIn" },
+  },
+  {
+    path: "/signup",
+    component: SignPage,
+    props: { signState: "signUp" },
   },
 ];
 
