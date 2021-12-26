@@ -1,6 +1,7 @@
 <template>
   <el-header class="header">
     <el-menu
+      :default-active="activeIndex"
       :router="true"
       mode="horizontal"
       background-color="#545c64"
@@ -24,9 +25,10 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      activeIndex: this.$route.path,
+    };
   },
-  methods: {},
 };
 </script>
 

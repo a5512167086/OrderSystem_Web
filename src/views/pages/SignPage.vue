@@ -54,7 +54,7 @@ import { signUpUser, signInUser } from "../../helpers/api";
 export default {
   data() {
     return {
-      isSignIn: true,
+      isSignIn: null,
       userInfo: {
         account: "",
         password: "",
@@ -80,9 +80,14 @@ export default {
   },
   props: ["signState"],
   watch: {
-    signState(state) {
+    signState: {
+      immediate: true,
+      handler: function (state) {
+        state === "signIn" ? (this.isSignIn = true) : (this.isSignIn = false);
+      },
+    },
+    isSignIn() {
       this.$refs["userInfo"].resetFields();
-      state === "signIn" ? (this.isSignIn = true) : (this.isSignIn = false);
     },
   },
   methods: {
