@@ -15,28 +15,17 @@
           <el-input v-model="userInfo.account"></el-input>
         </el-form-item>
         <el-form-item class="formItem" label="密碼" prop="password">
-          <el-input
-            type="password"
-            v-model="userInfo.password"
-            show-password
-          ></el-input>
+          <el-input type="password" v-model="userInfo.password" show-password>
+          </el-input>
         </el-form-item>
-        <el-form-item
-          v-if="!isSignIn"
-          class="formItem"
-          label="用戶名稱"
-          prop="userName"
-        >
-          <el-input v-model="userInfo.userName"></el-input>
-        </el-form-item>
-        <el-form-item
-          v-if="!isSignIn"
-          class="formItem"
-          label="用戶信箱"
-          prop="userEmail"
-        >
-          <el-input v-model="userInfo.userEmail"></el-input>
-        </el-form-item>
+        <template v-if="!isSignIn">
+          <el-form-item class="formItem" label="用戶名稱" prop="userName">
+            <el-input v-model="userInfo.userName"></el-input>
+          </el-form-item>
+          <el-form-item class="formItem" label="用戶信箱" prop="userEmail">
+            <el-input v-model="userInfo.userEmail"></el-input>
+          </el-form-item>
+        </template>
         <el-form-item>
           <el-button v-if="isSignIn" type="info" @click="submitForm(true)">
             登入
