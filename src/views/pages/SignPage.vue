@@ -38,10 +38,10 @@
           <el-input v-model="userInfo.userEmail"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button v-if="isSignIn" type="info" @click="signIn()">
+          <el-button v-if="isSignIn" type="info" @click="submitForm(true)">
             登入
           </el-button>
-          <el-button v-else type="info" @click="signUp()"> 註冊</el-button>
+          <el-button v-else type="info" @click="submitForm()">註冊</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import { signUpUser, signInUser } from "../../helpers/api";
+
 export default {
   data() {
     return {
@@ -81,6 +83,27 @@ export default {
     signState(state) {
       this.$refs["userInfo"].resetFields();
       state === "signIn" ? (this.isSignIn = true) : (this.isSignIn = false);
+    },
+  },
+  methods: {
+    submitForm(isSignIn) {
+      this.$refs["userInfo"].validate((valid) => {
+        if (valid) {
+          if (isSignIn) {
+            this.signIn();
+          } else {
+            this.signUp();
+          }
+        } else {
+          return false;
+        }
+      });
+    },
+    async signUp() {
+      await signUpUser(this.userInfo);
+    },
+    async signIn() {
+      await signInUser(this.userInfo);
     },
   },
 };
