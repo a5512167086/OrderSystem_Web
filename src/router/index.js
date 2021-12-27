@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import SignPage from "../views/pages/SignPage.vue";
+import CustomerPage from "../views/pages/CustomerPage.vue";
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,10 @@ const routes = [
     path: "/signup",
     component: SignPage,
     props: { signState: "signUp" },
+  },
+  {
+    path: "/order",
+    component: CustomerPage,
   },
 ];
 
