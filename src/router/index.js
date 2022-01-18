@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import SignPage from "../views/pages/SignPage.vue";
 import CustomerPage from "../views/pages/CustomerPage.vue";
+import CompanyPage from "../views/pages/CompanyPage.vue";
 
 Vue.use(VueRouter);
 
@@ -23,6 +24,10 @@ const routes = [
   {
     path: "/order",
     component: CustomerPage,
+  },
+  {
+    path: "/product_manage",
+    component: CompanyPage,
   },
 ];
 
