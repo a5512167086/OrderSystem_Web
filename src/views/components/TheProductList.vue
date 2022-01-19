@@ -42,6 +42,14 @@
           >
         </template>
       </el-table-column>
+      <el-table-column fixed="right" label="操作" width="100">
+        <template slot-scope="scope">
+          <el-button @click="handleClick(scope.row)" type="text" size="small"
+            >編輯</el-button
+          >
+          <el-button type="text" size="small">刪除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </el-container>
 </template>
