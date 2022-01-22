@@ -28,6 +28,12 @@ const routes = [
   {
     path: "/product_manage",
     component: CompanyPage,
+    props: { currentPage: "product" },
+  },
+  {
+    path: "/user_manage",
+    component: CompanyPage,
+    props: { currentPage: "user" },
   },
 ];
 
