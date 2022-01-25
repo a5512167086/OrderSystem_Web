@@ -5,6 +5,7 @@
       <el-button @click="clearFilter">清除所有篩選</el-button>
     </div>
     <el-table
+      class="product_list_box"
       ref="filterTable"
       height="200"
       border
@@ -26,33 +27,15 @@
         :filter-method="filterHandler"
       >
       </el-table-column>
-      <el-table-column prop="name" label="商品名稱" width="180">
+      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
+      <el-table-column prop="address" label="帳戶" :formatter="formatter">
       </el-table-column>
-      <el-table-column prop="address" label="價格" :formatter="formatter">
-      </el-table-column>
-      <el-table-column
-        prop="tag"
-        label="種類"
-        width="100"
-        :filters="[
-          { text: '家', value: '家' },
-          { text: '公司', value: '公司' },
-        ]"
-        :filter-method="filterTag"
-        filter-placement="bottom-end"
-      >
-        <template slot-scope="scope">
-          <el-tag
-            :type="scope.row.tag === '家' ? 'primary' : 'success'"
-            disable-transitions
-            >{{ scope.row.tag }}
-          </el-tag>
-        </template>
+      <el-table-column prop="address" label="密碼" :formatter="formatter">
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">
-            編輯
+          <el-button @click="handleClick(scope.row)" type="text" size="small"
+            >編輯
           </el-button>
           <el-button type="text" size="small">刪除</el-button>
         </template>
@@ -73,22 +56,16 @@ export default {
           tag: "家",
         },
         {
-          date: "2016-05-04",
+          date: "2016-05-02",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
-          tag: "公司",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
+          address: "上海市普陀区金沙江路 1518 弄",
           tag: "家",
         },
         {
-          date: "2016-05-03",
+          date: "2016-05-02",
           name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-          tag: "公司",
+          address: "上海市普陀区金沙江路 1518 弄",
+          tag: "家",
         },
       ],
     };

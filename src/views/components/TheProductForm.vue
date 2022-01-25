@@ -19,6 +19,15 @@
             v-if="imgUploading"
             title="上傳圖片中"
             type="warning"
+            :closable="false"
+            effect="dark"
+          >
+          </el-alert>
+          <el-alert
+            v-if="productForm.img_url != null"
+            title="上傳成功"
+            type="success"
+            :closable="false"
             effect="dark"
           >
           </el-alert>
