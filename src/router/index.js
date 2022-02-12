@@ -35,6 +35,11 @@ const routes = [
     component: CompanyPage,
     props: { currentPage: "user" },
   },
+  {
+    path: "/order_manage",
+    component: CompanyPage,
+    props: { currentPage: "order" },
+  },
 ];
 
 const router = new VueRouter({

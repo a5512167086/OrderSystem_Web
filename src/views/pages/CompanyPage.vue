@@ -8,6 +8,9 @@
       <the-user-form></the-user-form>
       <the-user-list></the-user-list>
     </template>
+    <template v-else-if="currentPage === 'order'">
+      <the-order-list></the-order-list>
+    </template>
   </el-main>
 </template>
 
@@ -16,9 +19,16 @@ import TheProductForm from "../components/TheProductForm.vue";
 import TheProductList from "../components/TheProductList.vue";
 import TheUserForm from "../components/TheUserForm.vue";
 import TheUserList from "../components/TheUserList.vue";
+import TheOrderList from "../components/TheOrderList.vue";
 
 export default {
-  components: { TheProductForm, TheProductList, TheUserForm, TheUserList },
+  components: {
+    TheProductForm,
+    TheProductList,
+    TheUserForm,
+    TheUserList,
+    TheOrderList,
+  },
   props: ["currentPage"],
 };
 </script>
