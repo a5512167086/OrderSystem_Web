@@ -14,9 +14,9 @@ export const signUpUser = (data) => {
     user_name: data.userName,
     user_email: data.userEmail,
   };
-  return request.post("api/v1/createUser", requireData);
+  return request.post("api/v1/user/create", requireData);
 };
 
 export const signInUser = (data) => {
-  return request.post("api/v1/loginUser", data);
+  return request.post("api/v1/user/login", data);
 };
