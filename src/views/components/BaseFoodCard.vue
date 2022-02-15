@@ -9,7 +9,9 @@
         <h1>{{ name }}</h1>
         <div>${{ price }}</div>
       </div>
-      <el-button round icon="el-icon-shopping-cart-2">加入訂單</el-button>
+      <el-button @click="setAddCartDialog" round icon="el-icon-shopping-cart-2"
+        >加入訂單
+      </el-button>
     </div>
   </el-card>
 </template>
@@ -17,6 +19,11 @@
 <script>
 export default {
   props: ["name", "img_url", "price"],
+  methods: {
+    setAddCartDialog() {
+      this.$emit("setAddCartDialog", true);
+    },
+  },
 };
 </script>
 
