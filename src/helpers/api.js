@@ -14,9 +14,18 @@ export const signUpUser = (data) => {
     user_name: data.userName,
     user_email: data.userEmail,
   };
+
   return request.post("api/v1/user/create", requireData);
 };
 
 export const signInUser = (data) => {
   return request.post("api/v1/user/login", data);
+};
+
+export const getAllFoodClass = () => {
+  return request.get("api/v1/food/get");
+};
+
+export const createFoodClass = (data) => {
+  return request.post("api/v1/food/create", data);
 };
