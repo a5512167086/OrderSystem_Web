@@ -1,53 +1,29 @@
 <template>
   <el-container class="product_list">
     <div>
+      <el-button @click="resetDateFilter">重新整理</el-button>
       <el-button @click="resetDateFilter">清除日期篩選</el-button>
       <el-button @click="clearFilter">清除所有篩選</el-button>
     </div>
     <el-table
-      ref="filterTable"
       height="200"
       border
-      :data="tableData"
+      :data="productTableData"
+      :default-sort="{ prop: 'date', order: 'descending' }"
       style="width: 100%"
     >
       <el-table-column
-        prop="date"
-        label="日期"
-        sortable
+        prop="created_at"
+        label="新增日期"
         width="180"
         column-key="date"
-        :filters="[
-          { text: '2016-05-01', value: '2016-05-01' },
-          { text: '2016-05-02', value: '2016-05-02' },
-          { text: '2016-05-03', value: '2016-05-03' },
-          { text: '2016-05-04', value: '2016-05-04' },
-        ]"
-        :filter-method="filterHandler"
+        sortable
       >
       </el-table-column>
       <el-table-column prop="name" label="商品名稱" width="180">
       </el-table-column>
-      <el-table-column prop="address" label="價格" :formatter="formatter">
-      </el-table-column>
-      <el-table-column
-        prop="tag"
-        label="種類"
-        width="100"
-        :filters="[
-          { text: '家', value: '家' },
-          { text: '公司', value: '公司' },
-        ]"
-        :filter-method="filterTag"
-        filter-placement="bottom-end"
-      >
-        <template slot-scope="scope">
-          <el-tag
-            :type="scope.row.tag === '家' ? 'primary' : 'success'"
-            disable-transitions
-            >{{ scope.row.tag }}
-          </el-tag>
-        </template>
+      <el-table-column prop="price" label="商品價格" sortable></el-table-column>
+      <el-table-column prop="type" label="商品分類" width="100">
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
@@ -62,36 +38,16 @@
 </template>
 
 <script>
+import { getAllFoodClass } from "../../helpers/api";
+
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-          tag: "家",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄",
-          tag: "公司",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-          tag: "家",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-          tag: "公司",
-        },
-      ],
+      productTableData: [],
     };
+  },
+  mounted() {
+    this.getAllFoodClass();
   },
   methods: {
     resetDateFilter() {
@@ -109,6 +65,11 @@ export default {
     filterHandler(value, row, column) {
       const property = column["property"];
       return row[property] === value;
+    },
+    async getAllFoodClass() {
+      await getAllFoodClass().then((res) => {
+        this.productTableData = res.data;
+      });
     },
   },
 };
