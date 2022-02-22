@@ -22,6 +22,10 @@ export const signInUser = (data) => {
   return request.post("api/v1/user/login", data);
 };
 
+export const getUsers = () => {
+  return request.get("api/v1/user/get");
+};
+
 export const getAllFoodClass = () => {
   return request.get("api/v1/food/get");
 };

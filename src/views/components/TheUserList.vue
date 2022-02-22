@@ -6,32 +6,24 @@
     </div>
     <el-table
       class="product_list_box"
-      ref="filterTable"
       height="200"
       border
-      :data="tableData"
+      :data="userData"
       style="width: 100%"
     >
       <el-table-column
-        prop="date"
+        prop="created_at"
         label="日期"
         sortable
         width="180"
         column-key="date"
-        :filters="[
-          { text: '2016-05-01', value: '2016-05-01' },
-          { text: '2016-05-02', value: '2016-05-02' },
-          { text: '2016-05-03', value: '2016-05-03' },
-          { text: '2016-05-04', value: '2016-05-04' },
-        ]"
-        :filter-method="filterHandler"
       >
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
-      <el-table-column prop="address" label="帳戶" :formatter="formatter">
+      <el-table-column prop="user_name" label="姓名"></el-table-column>
+      <el-table-column prop="user_email" label="姓名" width="200">
       </el-table-column>
-      <el-table-column prop="address" label="密碼" :formatter="formatter">
-      </el-table-column>
+      <el-table-column prop="account" label="帳戶"></el-table-column>
+      <el-table-column prop="password" label="密碼"></el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
           <el-button @click="handleClick(scope.row)" type="text" size="small"
@@ -45,30 +37,16 @@
 </template>
 
 <script>
+import { getUsers } from "../../helpers/api";
+
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-          tag: "家",
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-          tag: "家",
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-          tag: "家",
-        },
-      ],
+      userData: [],
     };
+  },
+  mounted() {
+    this.getAllUser();
   },
   methods: {
     resetDateFilter() {
@@ -86,6 +64,11 @@ export default {
     filterHandler(value, row, column) {
       const property = column["property"];
       return row[property] === value;
+    },
+    async getAllUser() {
+      await getUsers().then((res) => {
+        this.userData = res.data;
+      });
     },
   },
 };
