@@ -9,7 +9,7 @@
         label-position="left"
         label-width="100px"
         :model="productForm"
-        :rules="rules"
+        :rules="productRules"
       >
         <el-form-item label="商品名稱" prop="name">
           <el-input v-model="productForm.name"></el-input>
@@ -19,8 +19,8 @@
             <el-option
               v-for="item in productClass"
               :key="item.index"
-              :label="item"
-              :value="item"
+              :label="item.name"
+              :value="item.name"
             >
             </el-option>
           </el-select>
@@ -48,10 +48,31 @@
           <input v-else @change="onFileChange" type="file" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click.prevent="submitForm('ruleForm')">
+          <el-button type="primary" @click.prevent="submitForm('product')">
             新增商品
           </el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+    <el-card class="type_form_card">
+      <div slot="header">
+        <h1>新增種類</h1>
+      </div>
+      <el-form
+        ref="typeForm"
+        label-position="left"
+        label-width="100px"
+        :model="typeForm"
+        :rules="typeRules"
+      >
+        <el-form-item label="商品種類" prop="name">
+          <el-input v-model="typeForm.name"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click.prevent="submitForm('type')">
+            新增種類
+          </el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -60,13 +81,17 @@
 
 <script>
 import axios from "axios";
-import { createFoodClass } from "../../helpers/api";
+import {
+  createFoodClass,
+  createFoodType,
+  getAllFoodType,
+} from "../../helpers/api";
 
 export default {
   data() {
     return {
       imgUploading: false,
-      rules: {
+      productRules: {
         name: [{ required: true, message: "請輸入商品名稱" }],
         type: [{ required: true, message: "請輸入商品種類" }],
         price: [
@@ -81,19 +106,38 @@ export default {
         price: null,
         img_url: null,
       },
-      productClass: ["test", "test"],
+      typeRules: { name: [{ required: true, message: "請輸入種類名稱" }] },
+      typeForm: {
+        name: "",
+      },
+      productClass: [],
     };
   },
+  mounted() {
+    this.getAllFoodType();
+  },
   methods: {
-    submitForm() {
-      console.log(this.productForm);
-      this.$refs["productForm"].validate((valid) => {
-        if (valid) {
-          this.createFoodClass();
-        } else {
-          return false;
-        }
-      });
+    submitForm(formType) {
+      switch (formType) {
+        case "product":
+          this.$refs["productForm"].validate((valid) => {
+            if (valid) {
+              this.createFoodClass();
+            } else {
+              return false;
+            }
+          });
+          break;
+        case "type":
+          this.$refs["typeForm"].validate((valid) => {
+            if (valid) {
+              this.createFoodType();
+            } else {
+              return false;
+            }
+          });
+          break;
+      }
     },
     async onFileChange(e) {
       this.imgUploading = true;
@@ -122,12 +166,32 @@ export default {
         this.$refs["productForm"].resetFields();
       });
     },
+    async createFoodType() {
+      await createFoodType(this.typeForm).then((res) => {
+        console.log(res.data);
+        this.$refs["typeForm"].resetFields();
+      });
+    },
+    async getAllFoodType() {
+      await getAllFoodType().then((res) => {
+        this.productClass = res.data;
+      });
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.el-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .product_form_card {
   height: fit-content;
+}
+
+.type_form_card {
+  margin-top: 10px;
 }
 </style>

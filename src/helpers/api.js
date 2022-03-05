@@ -33,3 +33,11 @@ export const getAllFoodClass = () => {
 export const createFoodClass = (data) => {
   return request.post("api/v1/food/create", data);
 };
+
+export const createFoodType = (data) => {
+  return request.post("api/v1/food/type/create", data);
+};
+
+export const getAllFoodType = () => {
+  return request.get("api/v1/food/type/get");
+};
