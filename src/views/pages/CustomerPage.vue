@@ -1,17 +1,18 @@
 <template>
   <el-main>
     <el-tabs type="border-card" @tab-click="handleClick">
-      <el-tab-pane v-for="food in foodClass" :key="food.id" :label="food.name">
+      <el-tab-pane v-for="type in foodType" :key="type.id" :label="type.name">
         <div>
           <h2>
-            {{ food.name }}
+            {{ type.name }}
           </h2>
           <div class="foodList">
             <base-food-card
-              name="烤雞肉串"
-              img_url="https://imageproxy.icook.network/resize?background=255%2C255%2C255&height=1200&nocrop=false&stripmeta=true&type=auto&url=http%3A%2F%2Ftokyo-kitchen.icook.tw.s3.amazonaws.com%2Fuploads%2Frecipe%2Fcover%2F263772%2Fc0f92259311cb883.jpg&width=1200"
-              price="35"
-              @setAddCartDialog="setAddCartDialog"
+              v-for="food in foodClass"
+              :key="food.id"
+              :name="food.name"
+              :price="food.price"
+              :img_url="food.img_url"
             />
           </div>
         </div>
@@ -28,13 +29,14 @@
 <script>
 import BaseFoodCard from "../components/BaseFoodCard.vue";
 import TheOrderDialog from "../components/TheOrderDialog.vue";
+import { getAllFoodClass } from "../../helpers/api";
 
 export default {
   components: { BaseFoodCard, TheOrderDialog },
   data() {
     return {
       AddCartStatus: false,
-      foodClass: [
+      foodType: [
         { id: 1, name: "全部" },
         { id: 2, name: "烤串" },
         { id: 3, name: "炸物" },
@@ -42,11 +44,20 @@ export default {
         { id: 5, name: "蔬食" },
         { id: 6, name: "飲料" },
       ],
+      foodClass: [],
     };
+  },
+  mounted() {
+    this.getAllFoodClass();
   },
   methods: {
     setAddCartDialog(status) {
       this.AddCartStatus = status;
+    },
+    async getAllFoodClass() {
+      getAllFoodClass().then((res) => {
+        this.foodClass = res.data;
+      });
     },
   },
 };

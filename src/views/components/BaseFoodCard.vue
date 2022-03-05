@@ -1,9 +1,6 @@
 <template>
   <el-card class="foodCard" shadow="always">
-    <img
-      src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-      class="foodImage"
-    />
+    <img :src="img_url" class="foodImage" />
     <div class="foodContent">
       <div>
         <h1>{{ name }}</h1>
@@ -30,6 +27,7 @@ export default {
 <style lang="scss" scoped>
 .foodCard {
   width: 100%;
+  margin: 10px;
 
   .foodImage {
     width: 100%;
