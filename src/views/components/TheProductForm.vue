@@ -120,18 +120,20 @@ export default {
     submitForm(formType) {
       switch (formType) {
         case "product":
-          this.$refs["productForm"].validate((valid) => {
+          this.$refs["productForm"].validate(async (valid) => {
             if (valid) {
-              this.createFoodClass();
+              await this.createFoodClass();
+              this.$emit("reRenderTrigger");
             } else {
               return false;
             }
           });
           break;
         case "type":
-          this.$refs["typeForm"].validate((valid) => {
+          this.$refs["typeForm"].validate(async (valid) => {
             if (valid) {
-              this.createFoodType();
+              await this.createFoodType();
+              this.getAllFoodType();
             } else {
               return false;
             }

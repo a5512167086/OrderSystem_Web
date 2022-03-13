@@ -1,9 +1,7 @@
 <template>
   <el-container class="product_list">
     <div>
-      <el-button @click="resetDateFilter">重新整理</el-button>
-      <el-button @click="resetDateFilter">清除日期篩選</el-button>
-      <el-button @click="clearFilter">清除所有篩選</el-button>
+      <el-button @click="refresh">重新整理</el-button>
     </div>
     <el-table
       height="200"
@@ -30,46 +28,73 @@
           <el-button @click="handleClick(scope.row)" type="text" size="small">
             編輯
           </el-button>
-          <el-button type="text" size="small">刪除</el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click="openDeleteConfirmDialog(scope.row.id)"
+          >
+            刪除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog
+      title="警告"
+      :visible.sync="deleteDialogVisible"
+      width="30%"
+      :before-close="handleDeleteDialogVisible"
+    >
+      <span>確定要刪除{{ deleteFood.name }}嗎?</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleDeleteDialogVisible">取消</el-button>
+        <el-button type="primary" @click="deleteConfirm">確定</el-button>
+      </span>
+    </el-dialog>
   </el-container>
 </template>
 
 <script>
-import { getAllFoodClass } from "../../helpers/api";
+import { getAllFoodClass, deleteFoodClassById } from "../../helpers/api";
 
 export default {
   data() {
     return {
       productTableData: [],
+      deleteDialogVisible: false,
+      deleteFood: "",
     };
   },
   mounted() {
     this.getAllFoodClass();
   },
   methods: {
+    refresh() {
+      this.getAllFoodClass();
+    },
     resetDateFilter() {
       this.$refs.filterTable.clearFilter("date");
-    },
-    clearFilter() {
-      this.$refs.filterTable.clearFilter();
-    },
-    formatter(row) {
-      return row.address;
-    },
-    filterTag(value, row) {
-      return row.tag === value;
-    },
-    filterHandler(value, row, column) {
-      const property = column["property"];
-      return row[property] === value;
     },
     async getAllFoodClass() {
       await getAllFoodClass().then((res) => {
         this.productTableData = res.data;
       });
+    },
+    openDeleteConfirmDialog(id) {
+      this.deleteDialogVisible = true;
+
+      const filterDeleteFood = this.productTableData.filter(
+        (item) => item.id === id
+      );
+
+      this.deleteFood = filterDeleteFood[0];
+    },
+    handleDeleteDialogVisible() {
+      this.deleteDialogVisible = false;
+    },
+    async deleteConfirm() {
+      await deleteFoodClassById(this.deleteFood.id);
+      await this.getAllFoodClass();
+      this.deleteDialogVisible = false;
     },
   },
 };

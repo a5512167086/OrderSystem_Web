@@ -1,11 +1,11 @@
 <template>
-  <el-main class="company_page">
+  <el-main :key="reFreshTrigger" class="company_page">
     <template v-if="currentPage === 'product'">
-      <the-product-form></the-product-form>
+      <the-product-form @reRenderTrigger="reRenderTrigger"></the-product-form>
       <the-product-list class="product_list"></the-product-list>
     </template>
     <template v-else-if="currentPage === 'user'">
-      <the-user-form></the-user-form>
+      <the-user-form @reRenderTrigger="reRenderTrigger"></the-user-form>
       <the-user-list></the-user-list>
     </template>
     <template v-else-if="currentPage === 'order'">
@@ -29,7 +29,15 @@ export default {
     TheUserList,
     TheOrderList,
   },
+  data() {
+    return { reFreshTrigger: false };
+  },
   props: ["currentPage"],
+  methods: {
+    reRenderTrigger() {
+      this.reFreshTrigger = !this.reFreshTrigger;
+    },
+  },
 };
 </script>
 
