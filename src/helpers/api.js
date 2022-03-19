@@ -46,6 +46,14 @@ export const getAllFoodType = () => {
   return request.get("api/v1/food/type/get");
 };
 
+export const getFoodClassById = (data) => {
+  return request.get("api/v1/food/get/" + data);
+};
+
 export const deleteFoodTypeById = (data) => {
   return request.delete("api/v1/food/delete", data);
+};
+
+export const updateFoodClassById = (data) => {
+  return request.patch("api/v1/food/update", data);
 };

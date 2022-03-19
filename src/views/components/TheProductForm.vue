@@ -156,21 +156,17 @@ export default {
           this.imgUploading = false;
           this.productForm.img_url = res.data.data.display_url;
         })
-        .catch((err) => {
+        .catch(() => {
           this.imgUploading = false;
-
-          console.log(err);
         });
     },
     async createFoodClass() {
-      await createFoodClass(this.productForm).then((res) => {
-        console.log(res.data);
+      await createFoodClass(this.productForm).then(() => {
         this.$refs["productForm"].resetFields();
       });
     },
     async createFoodType() {
-      await createFoodType(this.typeForm).then((res) => {
-        console.log(res.data);
+      await createFoodType(this.typeForm).then(() => {
         this.$refs["typeForm"].resetFields();
       });
     },
