@@ -26,6 +26,18 @@ export const getUsers = () => {
   return request.get("api/v1/user/get");
 };
 
+export const getUserById = (data) => {
+  return request.get("api/v1/user/get/" + data);
+};
+
+export const deleteUserById = (data) => {
+  return request.delete("api/v1/user/delete", { params: { id: data } });
+};
+
+export const updateUserById = (data) => {
+  return request.patch("api/v1/user/update", data);
+};
+
 export const getAllFoodClass = () => {
   return request.get("api/v1/food/get");
 };

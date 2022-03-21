@@ -5,6 +5,7 @@
         <h1>新增使用者</h1>
       </div>
       <el-form
+        ref="userForm"
         label-position="left"
         label-width="100px"
         :model="userForm"
@@ -26,7 +27,7 @@
           <el-button type="primary" @click.prevent="submitUserForm">
             新增使用者
           </el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button @click="resetForm">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -63,8 +64,18 @@ export default {
     };
   },
   methods: {
-    submitUserForm() {
-      signUpUser(this.userForm);
+    async submitUserForm() {
+      this.$refs["userForm"].validate(async (valid) => {
+        if (valid) {
+          await signUpUser(this.userForm);
+          this.$emit("reRenderTrigger");
+        } else {
+          return false;
+        }
+      });
+    },
+    resetForm() {
+      this.$refs["userForm"].resetFields();
     },
   },
 };
