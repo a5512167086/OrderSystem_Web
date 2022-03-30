@@ -94,10 +94,24 @@ export default {
       });
     },
     async signUp() {
-      await signUpUser(this.userInfo);
+      await signUpUser(this.userInfo).then((res) => {
+        if (res.data.resultCode === 200) {
+          this.$router.push({ path: "/signin" });
+        }
+      });
     },
     async signIn() {
-      await signInUser(this.userInfo);
+      await signInUser(this.userInfo).then((res) => {
+        if (res.data.resultCode === 200) {
+          console.log(res.data.user_info);
+          this.$store.dispatch("user/signIn", res.data.user_info);
+          if (res.data.user_info.rank === "admin") {
+            this.$router.push({ path: "/product_manage" });
+            return;
+          }
+          this.$router.push({ path: "/order" });
+        }
+      });
     },
   },
 };
