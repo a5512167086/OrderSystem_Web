@@ -68,6 +68,7 @@ export default {
   methods: {
     signOut() {
       this.$store.dispatch("user/signOut");
+      this.$store.dispatch("cart/clearCart");
       this.$router.push({ path: "/signin" });
     },
   },

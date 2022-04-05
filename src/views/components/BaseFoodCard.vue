@@ -15,9 +15,19 @@
 
 <script>
 export default {
-  props: ["name", "img_url", "price"],
+  props: ["id", "name", "img_url", "price"],
+  computed: {
+    tmpOrderFood() {
+      return {
+        id: this.id,
+        name: this.name,
+        price: this.price,
+      };
+    },
+  },
   methods: {
     setAddCartDialog() {
+      this.$emit("setAddCartFood", this.tmpOrderFood);
       this.$emit("setAddCartDialog", true);
     },
   },

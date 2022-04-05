@@ -47,6 +47,25 @@ const routes = [
   {
     path: "/order",
     component: CustomerPage,
+    props: { currentPage: "order" },
+    beforeEnter: (to, from, next) => {
+      const currentUser = store.state.user.currentUser;
+      if (currentUser.rank == "admin") {
+        next("/product_manage");
+        return;
+      }
+      if (currentUser.rank == "user") {
+        next();
+        return;
+      }
+
+      next("/signin");
+    },
+  },
+  {
+    path: "/order_cart",
+    component: CustomerPage,
+    props: { currentPage: "order_cart" },
     beforeEnter: (to, from, next) => {
       const currentUser = store.state.user.currentUser;
       if (currentUser.rank == "admin") {
