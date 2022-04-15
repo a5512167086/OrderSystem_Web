@@ -18,11 +18,12 @@
     <div class="order_list_box">
       <base-order-card
         class="order_item"
-        v-for="order in orderTest"
+        v-for="order in orderData"
         :key="order.orderNum"
-        :orderNum="order.orderNum"
-        :orderStatus="order.orderStatus"
-        :orderTime="order.orderTime"
+        :orderId="order.id"
+        :orderStatus="order.status"
+        :orderFoods="order.order_foods"
+        :orderTime="order.created_at"
       >
       </base-order-card>
     </div>
@@ -31,27 +32,25 @@
 
 <script>
 import BaseOrderCard from "./BaseOrderCard.vue";
+import { getAllOrders } from "../../helpers/api";
 
 export default {
   components: { BaseOrderCard },
+  beforeMount() {
+    this.getAllOrders();
+  },
   data() {
     return {
       searchTime: "",
-      orderTest: [
-        { orderNum: 1, orderStatus: "待處理", orderTime: "2022-01-01" },
-        { orderNum: 2, orderStatus: "待處理", orderTime: "2022-01-01" },
-        { orderNum: 3, orderStatus: "待處理", orderTime: "2022-01-01" },
-        { orderNum: 4, orderStatus: "待處理", orderTime: "2022-01-01" },
-        { orderNum: 1, orderStatus: "待處理", orderTime: "2022-01-01" },
-        { orderNum: 2, orderStatus: "待處理", orderTime: "2022-01-01" },
-        { orderNum: 3, orderStatus: "待處理", orderTime: "2022-01-01" },
-        { orderNum: 4, orderStatus: "待處理", orderTime: "2022-01-01" },
-        { orderNum: 1, orderStatus: "待處理", orderTime: "2022-01-01" },
-        { orderNum: 2, orderStatus: "待處理", orderTime: "2022-01-01" },
-        { orderNum: 3, orderStatus: "待處理", orderTime: "2022-01-01" },
-        { orderNum: 4, orderStatus: "待處理", orderTime: "2022-01-01" },
-      ],
+      orderData: [],
     };
+  },
+  methods: {
+    getAllOrders() {
+      getAllOrders().then((res) => {
+        this.orderData = res.data;
+      });
+    },
   },
 };
 </script>
@@ -72,6 +71,7 @@ export default {
   flex-wrap: wrap;
 
   .order_item {
+    max-height: 400px;
     margin: 0 10px 15px;
   }
 }

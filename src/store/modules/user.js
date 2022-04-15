@@ -6,7 +6,6 @@ export default {
   getters: {},
   mutations: {
     signIn(state, userData) {
-      console.log(userData);
       const user = {
         id: userData.id,
         user_name: userData.account,

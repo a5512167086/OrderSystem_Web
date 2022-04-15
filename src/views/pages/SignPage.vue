@@ -103,7 +103,6 @@ export default {
     async signIn() {
       await signInUser(this.userInfo).then((res) => {
         if (res.data.resultCode === 200) {
-          console.log(res.data.user_info);
           this.$store.dispatch("user/signIn", res.data.user_info);
           if (res.data.user_info.rank === "admin") {
             this.$router.push({ path: "/product_manage" });

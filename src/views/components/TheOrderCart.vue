@@ -6,7 +6,9 @@
         <el-button @click="clearCart" type="warning" size="mini">
           清空
         </el-button>
-        <el-button type="primary" size="mini">送出</el-button>
+        <el-button @click="submitOrder" type="primary" size="mini">
+          送出
+        </el-button>
       </div>
     </div>
     <div class="order_item" v-for="item in orderCart" :key="item.id">
@@ -32,6 +34,8 @@
 </template>
 
 <script>
+import { createNewOrder } from "../../helpers/api";
+
 export default {
   data() {
     return { totalCost: 0 };
@@ -69,6 +73,14 @@ export default {
         result = 0;
       }
       this.totalCost = result;
+    },
+    submitOrder() {
+      const newOrder = {
+        user: this.currentUser.user_name,
+        foodList: this.orderCart,
+      };
+
+      createNewOrder(newOrder);
     },
   },
 };

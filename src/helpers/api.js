@@ -69,3 +69,11 @@ export const deleteFoodTypeById = (data) => {
 export const updateFoodClassById = (data) => {
   return request.patch("api/v1/food/update", data);
 };
+
+export const createNewOrder = (data) => {
+  return request.post("api/v1/order/create", data);
+};
+
+export const getAllOrders = () => {
+  return request.get("api/v1/order/get");
+};
