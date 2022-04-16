@@ -6,7 +6,12 @@
         <el-button @click="clearCart" type="warning" size="mini">
           清空
         </el-button>
-        <el-button @click="submitOrder" type="primary" size="mini">
+        <el-button
+          @click="submitOrder"
+          :disabled="orderCart.length <= 0"
+          type="primary"
+          size="mini"
+        >
           送出
         </el-button>
       </div>
@@ -74,13 +79,15 @@ export default {
       }
       this.totalCost = result;
     },
-    submitOrder() {
+    async submitOrder() {
       const newOrder = {
         user: this.currentUser.user_name,
         foodList: this.orderCart,
       };
 
-      createNewOrder(newOrder);
+      await createNewOrder(newOrder);
+      this.$store.dispatch("cart/clearCart");
+      this.$router.push({ path: "/order" });
     },
   },
 };
