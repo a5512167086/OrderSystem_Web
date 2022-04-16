@@ -1,15 +1,20 @@
 <template>
   <el-main>
     <template v-if="currentPage == 'order'">
-      <el-tabs type="border-card" @tab-click="handleClick">
-        <el-tab-pane v-for="type in foodType" :key="type.id" :label="type.name">
+      <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
+        <el-tab-pane
+          v-for="type in foodType"
+          :key="type.id"
+          :label="type.name"
+          :name="type.name"
+        >
           <div>
             <h2>
               {{ type.name }}
             </h2>
             <div class="foodList">
               <base-food-card
-                v-for="food in foodClass"
+                v-for="food in sortedFoodClass"
                 :key="food.id"
                 :id="food.id"
                 :name="food.name"
@@ -40,28 +45,23 @@
 import BaseFoodCard from "../components/BaseFoodCard.vue";
 import TheOrderDialog from "../components/TheOrderDialog.vue";
 import TheOrderCart from "../components/TheOrderCart.vue";
-import { getAllFoodClass } from "../../helpers/api";
+import { getAllFoodClass, getAllFoodType } from "../../helpers/api";
 
 export default {
   components: { BaseFoodCard, TheOrderDialog, TheOrderCart },
   data() {
     return {
       addCartStatus: false,
-      foodType: [
-        { id: 1, name: "全部" },
-        { id: 2, name: "烤串" },
-        { id: 3, name: "炸物" },
-        { id: 4, name: "熟食" },
-        { id: 5, name: "蔬食" },
-        { id: 6, name: "飲料" },
-      ],
+      activeName: "全部",
+      foodType: [],
       foodClass: [],
+      sortedFoodClass: [],
       tmpFood: null,
     };
   },
   props: ["currentPage"],
-  mounted() {
-    this.getAllFoodClass();
+  created() {
+    this.initialFoodData();
   },
   methods: {
     setAddCartDialog(status) {
@@ -75,13 +75,29 @@ export default {
       this.$store.dispatch("cart/addCart", this.tmpFood);
       this.addCartStatus = false;
     },
-    async getAllFoodClass() {
-      getAllFoodClass().then((res) => {
+    async initialFoodData() {
+      await getAllFoodClass().then((res) => {
         this.foodClass = res.data;
       });
+      await getAllFoodType()
+        .then((res) => {
+          this.foodType = res.data;
+        })
+        .then(() => {
+          this.foodType.unshift({ name: "全部" });
+        });
+      this.sortedFoodClass = this.foodClass;
     },
-    handleClick(test) {
-      console.log(test);
+    handleClick(e) {
+      if (e.name !== "全部") {
+        this.sortedFoodClass = this.foodClass.filter((food) => {
+          return food.type === e.name;
+        });
+
+        return;
+      }
+
+      this.sortedFoodClass = this.foodClass;
     },
   },
 };
