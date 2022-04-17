@@ -77,3 +77,7 @@ export const createNewOrder = (data) => {
 export const getAllOrders = () => {
   return request.get("api/v1/order/get");
 };
+
+export const deleteOrderById = (data) => {
+  return request.delete("api/v1/order/delete", { params: { id: data } });
+};

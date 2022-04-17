@@ -5,14 +5,14 @@
         <el-date-picker v-model="searchTime" type="date" placeholder="選擇日期">
         </el-date-picker>
       </div>
-      <el-button class="option_btn" type="primary" icon="el-icon-refresh-right">
-        清除日期
-      </el-button>
-      <el-button class="option_btn" type="primary" icon="el-icon-refresh-right">
+
+      <el-button
+        class="option_btn"
+        type="primary"
+        icon="el-icon-refresh-right"
+        @click="getAllOrders"
+      >
         刷新訂單
-      </el-button>
-      <el-button class="option_btn" type="primary" icon="el-icon-refresh-right">
-        重製編號
       </el-button>
     </div>
     <div class="order_list_box">
@@ -24,6 +24,7 @@
         :orderStatus="order.status"
         :orderFoods="order.order_foods"
         :orderTime="order.created_at"
+        @deleteOrderById="deleteOrderById"
       >
       </base-order-card>
     </div>
@@ -32,7 +33,7 @@
 
 <script>
 import BaseOrderCard from "./BaseOrderCard.vue";
-import { getAllOrders } from "../../helpers/api";
+import { getAllOrders, deleteOrderById } from "../../helpers/api";
 
 export default {
   components: { BaseOrderCard },
@@ -50,6 +51,10 @@ export default {
       getAllOrders().then((res) => {
         this.orderData = res.data;
       });
+    },
+    async deleteOrderById(id) {
+      await deleteOrderById(id);
+      this.getAllOrders();
     },
   },
 };

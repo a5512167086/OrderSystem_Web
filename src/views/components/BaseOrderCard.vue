@@ -4,7 +4,9 @@
       <span>訂單編號 : {{ orderId }} - {{ orderStatus }}</span>
       <div>
         <el-button type="text">編輯</el-button>
-        <el-button type="text" class="button">取消訂單</el-button>
+        <el-button type="text" class="button" @click="deleteOrder">
+          取消訂單
+        </el-button>
         <el-button type="text" class="button">確認付款</el-button>
       </div>
     </div>
@@ -21,6 +23,11 @@
 <script>
 export default {
   props: ["orderId", "orderFoods", "orderTime", "orderStatus"],
+  methods: {
+    deleteOrder() {
+      this.$emit("deleteOrderById", this.orderId);
+    },
+  },
 };
 </script>
 
