@@ -20,6 +20,7 @@
       </el-table-column>
       <el-table-column prop="account" label="帳戶"></el-table-column>
       <el-table-column prop="password" label="密碼"></el-table-column>
+      <el-table-column prop="rank" label="權限"></el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
           <el-button
@@ -57,16 +58,21 @@
       width="35%"
       :before-close="handleEditDialogVisible"
     >
-      <el-form :model="tmpUser" ref="ruleForm" label-width="100px">
-        <el-form-item label="商品名稱" prop="name">
+      <el-form
+        :model="tmpUser"
+        ref="ruleForm"
+        :rules="rules"
+        label-width="100px"
+      >
+        <el-form-item label="用戶名稱" prop="user_name">
           <el-input v-model="tmpUser.user_name"></el-input>
         </el-form-item>
-        <el-form-item label="商品價格" prop="name">
+        <el-form-item label="用戶信箱" prop="user_email">
           <el-input v-model="tmpUser.user_email"></el-input>
         </el-form-item>
-        <el-form-item label="商品價格" prop="name">
+        <el-form-item label="用戶帳號" prop="account">
           <el-input v-model="tmpUser.account"></el-input> </el-form-item
-        ><el-form-item label="商品價格" prop="name">
+        ><el-form-item label="用戶密碼" prop="password">
           <el-input v-model="tmpUser.password"></el-input>
         </el-form-item>
       </el-form>
@@ -94,6 +100,21 @@ export default {
       editDialogVisible: false,
       deleteUser: {},
       tmpUser: {},
+      rules: {
+        account: [
+          { required: true, message: "請輸入帳號" },
+          { min: 6, message: "帳戶長度須超過六個數字", trigger: "blur" },
+        ],
+        password: [
+          { required: true, message: "請輸入密碼" },
+          { min: 6, message: "密碼長度須超過六個數字", trigger: "blur" },
+        ],
+        user_name: [{ required: true, message: "請輸入用戶名稱" }],
+        user_email: [
+          { required: true, message: "請輸入用戶信箱" },
+          { type: "email", message: "請輸入正確的信箱格式", trigger: "blur" },
+        ],
+      },
     };
   },
   mounted() {
