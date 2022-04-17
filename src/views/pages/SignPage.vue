@@ -27,11 +27,11 @@
           </el-form-item>
         </template>
         <el-alert
-          v-show="errorLogin"
-          title="登入錯誤，請重新登入"
+          v-if="errorMsg != ''"
+          :title="errorMsg"
           type="error"
           class="formAlert"
-          @close="errorLogin = false"
+          @close="errorLogin = ''"
           effect="dark"
         >
         </el-alert>
@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       isSignIn: null,
-      errorLogin: false,
+      errorMsg: "",
       userInfo: {
         account: "",
         password: "",
@@ -104,14 +104,18 @@ export default {
       });
     },
     async signUp() {
+      this.errorMsg = "";
       await signUpUser(this.userInfo).then((res) => {
         if (res.data.resultCode === 200) {
           this.$router.push({ path: "/signin" });
+        } else {
+          this.errorMsg = res.data.message;
+          this.$refs["userInfo"].resetFields();
         }
       });
     },
     async signIn() {
-      this.errorLogin = false;
+      this.errorMsg = "";
       await signInUser(this.userInfo).then((res) => {
         if (res.data.resultCode === 200) {
           this.$store.dispatch("user/signIn", res.data.user_info);
@@ -121,7 +125,7 @@ export default {
           }
           this.$router.push({ path: "/order" });
         } else {
-          this.errorLogin = true;
+          this.errorMsg = res.data.message;
           this.$refs["userInfo"].resetFields();
         }
       });
