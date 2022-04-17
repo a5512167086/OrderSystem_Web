@@ -26,6 +26,15 @@
             <el-input v-model="userInfo.userEmail"></el-input>
           </el-form-item>
         </template>
+        <el-alert
+          v-show="errorLogin"
+          title="登入錯誤，請重新登入"
+          type="error"
+          class="formAlert"
+          @close="errorLogin = false"
+          effect="dark"
+        >
+        </el-alert>
         <el-form-item>
           <el-button v-if="isSignIn" type="info" @click="submitForm(true)">
             登入
@@ -44,6 +53,7 @@ export default {
   data() {
     return {
       isSignIn: null,
+      errorLogin: false,
       userInfo: {
         account: "",
         password: "",
@@ -101,6 +111,7 @@ export default {
       });
     },
     async signIn() {
+      this.errorLogin = false;
       await signInUser(this.userInfo).then((res) => {
         if (res.data.resultCode === 200) {
           this.$store.dispatch("user/signIn", res.data.user_info);
@@ -109,6 +120,9 @@ export default {
             return;
           }
           this.$router.push({ path: "/order" });
+        } else {
+          this.errorLogin = true;
+          this.$refs["userInfo"].resetFields();
         }
       });
     },
@@ -127,6 +141,10 @@ export default {
 }
 .signForm {
   width: 100%;
+}
+
+.formAlert {
+  margin: 10px 0;
 }
 
 @media (min-width: 400px) {
