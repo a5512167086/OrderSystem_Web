@@ -25,6 +25,7 @@
         :orderFoods="order.order_foods"
         :orderTime="order.created_at"
         @deleteOrderById="deleteOrderById"
+        @completeOrderById="completeOrderById"
       >
       </base-order-card>
     </div>
@@ -33,7 +34,11 @@
 
 <script>
 import BaseOrderCard from "./BaseOrderCard.vue";
-import { getAllOrders, deleteOrderById } from "../../helpers/api";
+import {
+  getAllOrders,
+  deleteOrderById,
+  completeOrderById,
+} from "../../helpers/api";
 
 export default {
   components: { BaseOrderCard },
@@ -54,6 +59,10 @@ export default {
     },
     async deleteOrderById(id) {
       await deleteOrderById(id);
+      this.getAllOrders();
+    },
+    async completeOrderById(id) {
+      await completeOrderById(id);
       this.getAllOrders();
     },
   },

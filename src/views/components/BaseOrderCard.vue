@@ -7,7 +7,9 @@
         <el-button type="text" class="button" @click="deleteOrder">
           取消訂單
         </el-button>
-        <el-button type="text" class="button">確認付款</el-button>
+        <el-button type="text" class="button" @click="completeOrder">
+          確認付款
+        </el-button>
       </div>
     </div>
     <div class="order_time">
@@ -26,6 +28,9 @@ export default {
   methods: {
     deleteOrder() {
       this.$emit("deleteOrderById", this.orderId);
+    },
+    completeOrder() {
+      this.$emit("completeOrderById", this.orderId);
     },
   },
 };

@@ -81,3 +81,7 @@ export const getAllOrders = () => {
 export const deleteOrderById = (data) => {
   return request.delete("api/v1/order/delete", { params: { id: data } });
 };
+
+export const completeOrderById = (data) => {
+  return request.patch("api/v1/order/complete", { id: data });
+};
